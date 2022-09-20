@@ -15,12 +15,12 @@ This repository is divided into various sections based on contents which are lis
 6. [Matplotlib Object Hierarchy](#6)
 7. [Matplotlib interfaces](#7)
 8. [Pyplot API](#8)
-9. [Object-Oriented API](#9)
-10. [Figure and Subplots](#10)
-11. [First plot with Matplotlib](#11)
-12. [Multiline Plots](#12)
-13. [Parts of a Plot](#13)
-14. [Saving the Plot](#14)
+9. [State-machine interface](#9)
+10. [Plotting with keyword strings](#10)
+11. [Plotting with categorical variables](#11)
+12. [Object-Oriented API](#12)
+13. [Objects and Reference](#13)
+14. [Figure and Subplots](#14)
 15. [Line Plot](#15)
 16. [Scatter Plot](#16)
 17. [Histogram](#17)
@@ -114,33 +114,116 @@ looks for all currently active figure objects, and opens one or more interactive
 ## **6. Matplotlib Object Hierarchy**<a class="anchor" id="6"></a>
 [Table of Contents](#0.1)
 
-There is an Object Hierarchy within Matplotlib. In Matplotlib, a plot is a hierarchy of nested Python objects. A **hierarch** means that there is a tree-like structure of Matplotlib objects underlying each plot.
+- There is an Object Hierarchy within Matplotlib. In Matplotlib, a plot is a hierarchy of nested Python objects. A **hierarch** means that there is a tree-like structure of Matplotlib objects underlying each plot.
 
-A **Figure** object is the outermost container for a Matplotlib plot. The **Figure** object contain multiple **Axes** objects. So, the **Figure** is the final graphic that may contain one or more **Axes**. The **Axes** represent an individual plot.
+- A **Figure** object is the outermost container for a Matplotlib plot. The **Figure** object contain multiple **Axes** objects. So, the **Figure** is the final graphic that may contain one or more **Axes**. The **Axes** represent an individual plot.
 
-So, we can think of the **Figure** object as a box-like container containing one or more **Axes**. The **Axes** object contain smaller objects such as tick marks, lines, legends, title and text-boxes.
+- So, we can think of the **Figure** object as a box-like container containing one or more **Axes**. The **Axes** object contain smaller objects such as tick marks, lines, legends, title and text-boxes.
 
 ## **7.	Matplotlib API Overview**<a class="anchor" id="7"></a>
 [Table of Contents](#0.1)
 
-Matplotlib has two APIs to work with. A MATLAB-style state-based interface and a more powerful object-oriented (OO) interface. 
-The former MATLAB-style state-based interface is called **pyplot interface** and the latter is called **Object-Oriented** interface.
+- Matplotlib has two APIs to work with. A MATLAB-style state-based interface and a more powerful object-oriented (OO) interface. The former MATLAB-style state-based interface is called **pyplot interface** and the latter is called **Object-Oriented** interface.
 
-There is a third interface also called **pylab** interface. It merges pyplot (for plotting) and NumPy (for mathematical functions) together in an environment closer to MATLAB. This is considered bad practice nowadays. So, the use of **pylab** is strongly discouraged and hence, I will not discuss it any further.
+- There is a third interface also called **pylab** interface. It merges pyplot (for plotting) and NumPy (for mathematical functions) together in an environment closer to MATLAB. This is considered bad practice nowadays. So, the use of **pylab** is strongly discouraged and hence, I will not discuss it any further.
 
 ## **8. Pyplot API** <a class="anchor" id="8"></a>
 [Table of Contents](#0.1)
 
-**Matplotlib.pyplot** provides a MATLAB-style, procedural, state-machine interface to the underlying object-oriented library in Matplotlib. **Pyplot** is a collection of command style functions that make Matplotlib work like MATLAB. Each pyplot function makes some change to a figure - e.g., creates a figure, creates a plotting area in a figure etc. 
+- **Matplotlib.pyplot** provides a MATLAB-style, procedural, state-machine interface to the underlying object-oriented library in Matplotlib. **Pyplot** is a collection of command style functions that make Matplotlib work like MATLAB. Each pyplot function makes some change to a figure - e.g., creates a figure, creates a plotting area in a figure etc. 
 
-**Matplotlib.pyplot** is stateful because the underlying engine keeps track of the current figure and plotting area information and plotting functions change that information. To make it clearer, we did not use any object references during our plotting we just issued a pyplot command, and the changes appeared in the figure.
+- **Matplotlib.pyplot** is stateful because the underlying engine keeps track of the current figure and plotting area information and plotting functions change that information. To make it clearer, we did not use any object references during our plotting we just issued a pyplot command, and the changes appeared in the figure.
 
-We can get a reference to the current figure and axes using the following commands-
+- We can get a reference to the current figure and axes using the following commands-
 
-`plt.gcf ( )`    *get current figure*
+    `plt.gcf ( )`    *get current figure*
 
-`plt.gca ( )`   *get current axes* 
+    `plt.gca ( )`   *get current axes* 
 
-**Matplotlib.pyplot** is a collection of commands and functions that make Matplotlib behave like MATLAB (for plotting). The MATLAB-style tools are contained in the pyplot (plt) interface. 
+- **Matplotlib.pyplot** is a collection of commands and functions that make Matplotlib behave like MATLAB (for plotting). The MATLAB-style tools are contained in the pyplot (plt) interface. 
 
-This is really helpful for interactive plotting, because we can issue a command and see the result immediately. But, it is not suitable for more complicated cases. For these cases, we have another interface called **Object-Oriented** interface, described later.
+    This is really helpful for interactive plotting, because we can issue a command and see the result immediately. But, it is not suitable for more complicated cases. For these cases, we have another interface called **Object-Oriented** interface, described later.
+
+## **9. State-machine interface** <a class="anchor" id="9"></a>
+[Table of Contents](#0.1)
+- Pyplot provides the state-machine interface to the underlying object-oriented plotting library. The state-machine implicitly and automatically creates figures and axes to achieve the desired plot. 
+
+## **10. Plotting with keyword strings**<a class="anchor" id="10"></a>
+[Table of Contents](#0.1)
+- There are some instances where you have data in a format that lets you access particular variables with strings. Matplotlib allows you provide such an object with the data keyword argument. If provided, then you may generate plots with the strings corresponding to these variables.
+
+![image](https://user-images.githubusercontent.com/35486320/191327771-809a1af9-2117-4d80-9454-f3dcdb54781e.png)
+
+## **11. Plotting with categorical variables**<a class="anchor" id="11"></a>
+[Table of Contents](#0.1)
+- It is also possible to create a plot using categorical variables. Matplotlib allows you to pass categorical variables directly to many plotting functions.
+
+![image](https://user-images.githubusercontent.com/35486320/191328074-1a6fa1f4-2f99-411e-ac9c-6b43d7d0f489.png)
+    
+    names = ['group_a', 'group_b', 'group_c')
+    values = [1, 10,100]
+    plt.figure(figsize=(9, 3))
+    plt.subplot(131)
+    plt.bar(names, values)
+    plt.subplot(132)
+    plt.scatter(names, values)
+    plt.subplot(133)
+    plt.plot(names, values)
+    plt.suptitle('Categorical Plotting')
+    plt.show()
+
+## **12 Object-Oriented API** <a class="anchor" id="12></a>
+[Table of Contents](#0.1)
+- The **Object-Oriented API** is available for more complex plotting situations. It allows us to exercise more control over the figure. In Pyplot API, we depend on some notion of an "active" figure or axes. But, in the **Object-Oriented API** the plotting functions are methods of explicit Figure and Axes objects.
+- **Figure** is the top level container for all the plot elements. We can think of the **Figure** object as a box-like container containing one or more **Axes**. 
+- The **Axes** represent an individual plot. The **Axes** object contain smaller objects such as axis, tick marks, lines, legends, title and text-boxes.
+
+The following code produces sine and cosine curves using Object-Oriented API.
+    
+    fig, ax = plt.subplots(2)
+    x1 = np.linspace(0, 10, 100)
+    ax[0].plot(x1, np.sin(x1), 'b-')
+    ax[1].plot(x1, np.cos(x1), 'b-');
+    
+![image](https://user-images.githubusercontent.com/35486320/191329241-467c53ea-1fbc-487f-bca2-c9f9739d3667.png)
+
+## **13. Objects and Reference** <a class="anchor" id="13></a>
+[Table of Contents](#0.1)
+
+- The main idea with the **Object Oriented API** is to have objects that one can apply functions and actions on. The real advantage of this approach becomes apparent when more than one figure is created or when a figure contains more than one 
+subplot.
+
+We create a reference to the figure instance in the **fig** variable. Then, we ceate a new axis instance **axes** using the **add_axes** method in the Figure class instance fig as follows:-
+
+    fig = plt.figure()
+    x2 = np.linspace(0, 5, 10)
+    y2 = x2 ** 2
+    axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+    axes.plot(x2, y2, 'r')
+    axes.set_xlabel('x2')
+    axes.set_ylabel('y2')    
+    axes.set_title('title');
+    
+## **14. Figure and Subplots**<a class="anchor" id="14></a>
+[Table of Contents](#0.1)
+- Plots in Matplotlib reside within a Figure object. As described earlier, we can create a new figure with plt.figure() as follows:-
+
+    `fig = plt.figure()`
+
+- Now, I create one or more subplots using fig.add_subplot() as follows:-
+
+    `ax1 = fig.add_subplot(2, 2, 1)`
+
+- The above command means that there are four plots in total (2 * 2 = 4). I select the first of four subplots (numbered from 1).
+
+- I create the next three subplots using the fig.add_subplot() commands as follows:-
+
+    `ax2 = fig.add_subplot(2, 2, 2)`
+    
+    `ax3 = fig.add_subplot(2, 2, 3)`
+    
+    `ax4 = fig.add_subplot(2, 2, 4)`
+
+The above command result in creation of subplots. The diagrammatic representation of subplots are as follows:-
+
+![image](https://user-images.githubusercontent.com/35486320/191330292-973267c4-e70a-4790-b7b8-dee84807f4c2.png)
